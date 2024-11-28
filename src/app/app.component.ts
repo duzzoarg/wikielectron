@@ -1,12 +1,28 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core'; // Importar Componente
+import { FormsModule } from '@angular/forms'; // Importar FormsModule
+import { CommonModule } from '@angular/common'; // Importar CommonModule
+import { WikipediaService } from './wikipedia.service';
 
-@Component({
+
+@Component({//   
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [FormsModule, CommonModule], // HttpClientModule ya no es necesario aquí
 })
 export class AppComponent {
-  title = 'wikielectron';
+  title = 'wikipedia-search';//  
+  searchTerm: string = '';//
+  searchResults: any[] = [];
+
+
+  constructor(private wikipediaService: WikipediaService) {}
+
+
+  searchWikipedia() {//   
+    this.wikipediaService.search(this.searchTerm).subscribe((response: any) => {
+      this.searchResults = response.query.search;
+    });
+  }
 }
